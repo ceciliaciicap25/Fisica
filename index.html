@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unidad 1 - Física en Acción</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        /* --- CONFIGURACIÓN GENERAL Y FONDO GIF --- */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* Fondo GIF animado fijo a pantalla completa */
+            background-image: url('img/rayitos .gif');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            font-family: Arial, sans-serif;
+            color: #2d3748;
+        }
+
+        header {
+            width: 100%;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        /* RECUADRO CON FONDO BLANCO PARA EL TÍTULO PRINCIPAL */
+        .header-box {
+            background-color: rgba(255, 255, 255, 0.95);
+            display: inline-block;
+            padding: 15px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+            margin-bottom: 15px;
+        }
+
+        .header-box h1 {
+            margin: 0;
+            color: #1a365d;
+            font-size: 32px;
+        }
+
+        main {
+            width: 95%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        /* CAJA ÚNICA CONTENEDORA DE TODO EL CONTENIDO */
+        .contenedor-unico {
+            background-color: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            margin: 25px auto 50px auto;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            text-align: left;
+            box-sizing: border-box;
+        }
+
+        /* Encabezados */
+        h2 {
+            color: #1a365d;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 35px;
+            text-align: center;
+        }
+
+        h3 {
+            color: #2b6cb0;
+            margin-top: 25px;
+        }
+
+        p {
+            line-height: 1.7;
+            font-size: 16px;
+        }
+
+        /* Centrado de Imágenes y Videos dentro de la caja */
+        .cartita__imagen {
+            display: block;
+            margin: 25px auto;
+            width: 70%;
+            max-width: 550px;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+        }
+
+        video {
+            display: block;
+            margin: 30px auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.18);
+        }
+
+        /* ESTILO PARA EL CONTENEDOR DEL SIMULADOR */
+        .simulador-contenedor {
+            width: 100%;
+            max-width: 800px;
+            margin: 25px auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 2px solid #3182ce;
+        }
+
+        .simulador-contenedor iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            display: block;
+        }
+
+        /* Estilo de listas */
+        ul, ol {
+            line-height: 1.7;
+            padding-left: 25px;
+            font-size: 16px;
+        }
+
+        /* Estilo de la navegación de cabecera */
+        .menu ul, .menu-temas ul {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .menu a, .menu-temas a {
+            text-decoration: none;
+            color: #1a365d;
+            font-weight: bold;
+        }
+
+        .menu-temas {
+            background: #edf2f7;
+            padding: 10px;
+            border-radius: 8px;
+            margin: 25px 0;
+        }
+
+        /* --- BOTÓN RETRO TIPO VIDEOJUEGO (ARCADE) --- */
+        .arcade-container {
+            text-align: center;
+            margin: 40px 0;
+        }
+
+        .btn-arcade {
+            display: inline-block;
+            background-color: #ff4757;
+            color: #ffffff;
+            font-family: 'Arial Black', Impact, sans-serif;
+            font-size: 22px;
+            font-weight: 900;
+            text-transform: uppercase;
+            padding: 18px 40px;
+            border: 4px solid #1e272e;
+            border-radius: 12px;
+            box-shadow: 0 8px 0 #b32b38, 0 15px 20px rgba(0, 0, 0, 0.4);
+            cursor: pointer;
+            transition: all 0.1s ease;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px #000;
+        }
+
+        .btn-arcade:hover {
+            background-color: #ff6b81;
+            transform: translateY(-2px);
+            box-shadow: 0 10px 0 #b32b38, 0 18px 22px rgba(0, 0, 0, 0.5);
+        }
+
+        .btn-arcade:active {
+            transform: translateY(6px);
+            box-shadow: 0 2px 0 #b32b38, 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        /* --- CONTENEDOR DEL JUEGO (Oculto hasta hacer clic) --- */
+        #juego-seccion {
+            display: none;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            max-width: 650px;
+            margin: 30px auto;
+            padding: 25px;
+            text-align: center;
+            border: 3px solid #3182ce;
+        }
+
+        .quiz-header { border-bottom: 2px solid #e0e0e0; padding-bottom: 15px; margin-bottom: 20px; }
+        .quiz-header h2 { border-bottom: none; color: #1a365d; margin: 0 0 10px 0; }
+        .stats { display: flex; justify-content: space-between; font-weight: bold; color: #4a5568; }
+        .question-text { font-size: 18px; color: #2d3748; margin-bottom: 20px; font-weight: 600; }
+        .options-grid { display: grid; gap: 12px; }
+        .btn-option { background-color: #edf2f7; border: 2px solid #cbd5e0; border-radius: 8px; padding: 12px 16px; font-size: 16px; text-align: left; cursor: pointer; color: #2d3748; }
+        .btn-option:hover:not([disabled]) { background-color: #e2e8f0; }
+        .btn-option.correct { background-color: #c6f6d5; border-color: #38a169; color: #22543d; font-weight: bold; }
+        .btn-option.incorrect { background-color: #fed7d7; border-color: #e53e3e; color: #742a2a; }
+        .feedback { margin-top: 15px; padding: 12px; border-radius: 6px; display: none; font-size: 15px; }
+        .feedback.show { display: block; }
+        .feedback.correct-fb { background-color: #e6fffa; color: #234e52; border-left: 4px solid #319795; }
+        .feedback.incorrect-fb { background-color: #fff5f5; color: #742a2a; border-left: 4px solid #e53e3e; }
+        .btn-next, .btn-restart { margin-top: 20px; width: 100%; background-color: #3182ce; color: white; border: none; padding: 12px; font-size: 16px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .btn-restart { background-color: #38a169; }
+        .results { text-align: center; display: none; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav class="menu">
+            <ul>
+                <li class="menu__item active">
+                    <div class="header-box">
+                        <a href="index.html"><h1>FÍSICA EN ACCIÓN</h1></a>
+                    </div>
+                </li>
+                
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <!-- CAJA ÚNICA QUE ALBERGA TODO EL CONTENIDO DE LA UNIDAD -->
+        <div class="contenedor-unico">
+            
+            <!-- Sección Energía -->
+            <section id="energia">
+                <h2>LA ENERGÍA</h2>
+                <img class="cartita__imagen" src="img/energia.jpeg" alt="Ilustración de Energía">
+                <p>
+                    La energía es la capacidad que tiene un sistema para realizar un trabajo o producir cambios en la materia (como modificar su movimiento, temperatura, estado o composición). Se mide en Joules (J) según el Sistema Internacional.
+                </p>
+            </section>
+
+            <!-- Navegación interna / Temas -->
+            <nav class="menu-temas">
+                <ul>
+                    <li><a href="#electricidad">Electricidad</a></li>
+                    <li><a href="#magnetismo">Magnetismo</a></li>
+                    <li><a href="#recursos">Recurso Audiovisual</a></li>
+                </ul>
+            </nav>
+
+            <!-- Sección Electricidad -->
+            <section id="electricidad">
+                <h2>Electricidad</h2>
+                <p>
+                    Electricidad y magnetismo son dos manifestaciones interconectadas de una misma fuerza fundamental de la naturaleza: la fuerza electromagnética.
+                </p>
+                
+                <h3>Electricidad</h3>
+                <img class="cartita__imagen" src="img/carga electrica .jpeg" alt="Carga eléctrica">
+
+                <p>
+                    Conjunto de fenómenos físicos relacionados con la presencia y el flujo de cargas eléctricas. Se divide principalmente en:
+                </p>
+                <ul>
+                    <li><strong>Electrostática:</strong> Estudia las cargas eléctricas en reposo y las fuerzas de atracción o repulsión entre ellas (Ley de Coulomb).</li>
+                    <li><strong>Electrodinámica:</strong> Estudia las cargas en movimiento, es decir, la corriente eléctrica a través de un conductor.</li>
+                </ul>
+
+                <h3>Conceptos clave:</h3>
+                <ul>
+                    <li><strong>Carga eléctrica (q):</strong> Propiedad intrínseca de las partículas subatómicas (electrones y protones). Se mide en Coulombs (C).</li>
+                    <li><strong>Campo eléctrico (E):</strong> Región del espacio modificada por la presencia de una carga, que ejerce una fuerza sobre cualquier otra carga que se introduzca en él.</li>
+                    <li><strong>Tensión o Voltaje (V):</strong> Diferencia de potencial eléctrico que impulsa a las cargas a moverse a través de un circuito.</li>
+                    <li><strong>Corriente eléctrica (I):</strong> Caudal o flujo de carga eléctrica por unidad de tiempo. Se mide en Amperios (A).</li>
+                </ul>
+
+                <!-- VIDEO AGREGADO DEBAJO DE CONCEPTOS CLAVE -->
+                <video src="img/Ceci.mp4" controls width="80%">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+            </section>
+
+            <!-- Sección Magnetismo -->
+            <section id="magnetismo">
+                <h2>Magnetismo</h2>
+                <p>
+                    El magnetismo es la rama de la física que estudia las propiedades de los imanes y de las fuerzas de atracción o repulsión que estos ejercen sobre materiales ferromagnéticos como el hierro, el níquel y el cobalto.
+                </p>
+                
+                <h3>Polos Magnéticos</h3>
+                <p>
+                    <strong>Polo Norte y Sur. Ley de Atracción y Repulsión:</strong><br>
+                    Todo imán presenta zonas donde la fuerza de atracción magnética se manifiesta con máxima intensidad. Estas regiones reciben el nombre de polos magnéticos, los cuales se clasifican convencionalmente en polo norte (N) y polo sur (S).
+                </p>
+                <p>
+                    Esta denominación proviene de la propiedad de los imanes de orientarse espacialmente según el eje geográfico de la Tierra cuando pueden girar libremente.<br>
+                    El comportamiento de los polos magnéticos se rige por la Ley fundamental de las interacciones magnéticas:
+                </p>
+                <ul>
+                    <li><strong>Polos del mismo nombre (igual signo) se repelen:</strong> si se aproximan dos polos nortes (N-N) o dos polos sures (S-S), se genera una fuerza ejercida a distancia que tiende a separarlos.</li>
+                    <li><strong>Polos de distinto nombre (diferente signo) se atraen:</strong> al acercar un polo norte y un polo sur (N-S), se origina una fuerza magnética de atracción entre ellos.</li>
+                </ul>
+                <p>
+                    Una propiedad física esencial de los imanes es la inseparabilidad de los polos magnéticos (ausencia de monopolos). Si un imán de barra se fragmenta en dos o más trozos, no se obtienen polos aislados; por el contrario, en cada uno de los fragmentos resultantes se reorganizan de forma inmediata un nuevo polo norte y un nuevo polo sur.
+                </p>
+
+                <h3>Campo Magnético</h3>
+                
+                <!-- SIMULADOR INTERACTIVO INCRUSTADO -->
+                <div class="simulador-contenedor">
+                    <iframe src="https://phet.colorado.edu/sims/html/magnet-and-compass/latest/magnet-and-compass_all.html?locale=es" title="Simulador de Campo Magnético" allowfullscreen></iframe>
+                </div>
+
+                <p>
+                    <strong>Definición de Campo Magnético y Líneas de Campo:</strong><br>
+                    El campo magnético es la región del espacio que rodea a un imán o a una carga eléctrica en movimiento, dentro de la cual se hacen sentir sus influencias o fuerzas magnéticas. Aunque el campo magnético es una entidad física invisible, puede ser detectado mediante el uso de limaduras de hierro o agujas magnéticas.
+                </p>
+                <p>
+                    Para representar gráficamente el campo magnético se utilizan las líneas de fuerza magnética (o líneas de inducción), un concepto introducido históricamente por el físico Michael Faraday. Las líneas de campo poseen las siguientes características formales:
+                </p>
+                <ol>
+                    <li><strong>Trayectorias cerradas:</strong> las líneas de fuerza no tienen principio ni fin aislados. En el espacio exterior al imán, emergen del polo norte y se curvan para ingresar por el polo sur, continuando su recorrido por el interior del imán desde el polo sur de regreso al polo norte.</li>
+                    <li><strong>Densidad y concentración:</strong> en las regiones cercanas a los polos magnéticos, las líneas se encuentran más próximas o apretadas entre sí, lo que indica visualmente que la intensidad del campo magnético es mayor en esos puntos.</li>
+                    <li><strong>Imposibilidad de cruce:</strong> dos líneas de fuerza magnética nunca se intersecan en el espacio; el vector de campo magnético es tangente a las líneas en cada punto.</li>
+                </ol>
+            </section>
+
+            <!-- Video de soporte -->
+            <section id="recursos">
+                <h2>Recurso audiovisual</h2>
+                <video src="img/a-magnetismo .mp4" controls width="80%">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+            </section>
+
+            <!-- BOTÓN DE INICIO ESTILO VIDEOJUEGO -->
+            <div class="arcade-container" id="boton-juego-contenedor">
+                <button class="btn-arcade" onclick="iniciarJuegoVisual()">🎮 ¡VAMOS A JUGAR!</button>
+            </div>
+
+            <!-- SECCIÓN DEL JUEGO INCLUIDA DENTRO DE LA MISMA CAJA -->
+            <section id="juego-seccion">
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <h2>⚡ Desafío de Física: Unidad 1</h2>
+                        <div class="stats">
+                            <span id="progress-text">Pregunta 1 de 5</span>
+                            <span id="score-text">Puntos: 0</span>
+                        </div>
+                    </div>
+
+                    <div id="quiz-screen">
+                        <div class="question-text" id="question">Cargando pregunta...</div>
+                        <div class="options-grid" id="options"></div>
+                        <div class="feedback" id="feedback"></div>
+                        <button class="btn-next" id="btn-next" style="display:none;" onclick="siguientePregunta()">Siguiente Pregunta</button>
+                    </div>
+
+                    <div class="results" id="results-screen">
+                        <h2>🎉 ¡Desafío Completado!</h2>
+                        <p id="final-score" style="font-size: 20px; font-weight: bold;"></p>
+                        <p id="final-message"></p>
+                        <button class="btn-restart" onclick="reiniciarJuego()">Volver a Jugar</button>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- SCRIPT DE SONIDO ELÉCTRICO Y CONTROL DEL JUEGO -->
+    <script>
+        // SINTETIZADOR DE CHISPA ELÉCTRICA AL HACER CLIC
+        let audioCtx = null;
+
+        function reproducirSonidoElectrico() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            // Tipo de onda diente de sierra para un tono rasgado/eléctrico
+            osc.type = 'sawtooth';
+
+            // Frecuencia inicial alta (800Hz) cayendo rápido a una muy baja (100Hz) en 0.05 segundos
+            const now = audioCtx.currentTime;
+            osc.frequency.setValueAtTime(800, now);
+            osc.frequency.exponentialRampToValueAtTime(100, now + 0.05);
+
+            // Volumen inicial corto y desvanecimiento relámpago (efecto chispazo)
+            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, now + 0.05);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.05);
+        }
+
+        // Escuchar cada clic realizado en el documento
+        document.addEventListener('click', () => {
+            reproducirSonidoElectrico();
+        });
+
+        // --- LÓGICA DEL JUEGO DE PREGUNTAS ---
+        function iniciarJuegoVisual() {
+            document.getElementById('boton-juego-contenedor').style.display = 'none';
+            const juegoSeccion = document.getElementById('juego-seccion');
+            juegoSeccion.style.display = 'block';
+            juegoSeccion.scrollIntoView({ behavior: 'smooth' });
+            cargarPregunta();
+        }
+
+        const preguntas = [
+            {
+                pregunta: "¿En qué unidad se mide la Energía según el Sistema Internacional?",
+                opciones: ["Amperios (A)", "Joules (J)", "Volts (V)", "Coulombs (C)"],
+                correcta: 1,
+                explicacion: "¡Correcto! La energía se mide en Joules (J)."
+            },
+            {
+                pregunta: "¿Qué sucede cuando acercas dos polos magnéticos del mismo signo (ej. Norte - Norte)?",
+                opciones: ["Se atraen", "Se repelen", "Se anulan y desaparecen", "Se convierten en cargas eléctricas"],
+                correcta: 1,
+                explicacion: "¡Muy bien! Polos del mismo signo se repelen, según la ley fundamental del magnetismo."
+            },
+            {
+                pregunta: "¿Qué rama de la electricidad estudia las cargas en movimiento?",
+                opciones: ["Electrostática", "Electrodinámica", "Termodinámica", "Magnetostática"],
+                correcta: 1,
+                explicacion: "¡Correcto! La Electrodinámica estudia las cargas eléctricas en movimiento (corriente)."
+            },
+            {
+                pregunta: "Si un imán de barra se corta por la mitad, ¿qué sucede?",
+                opciones: [
+                    "Se obtiene un polo Norte aislado y un polo Sur aislado.",
+                    "Pierde todo su magnetismo.",
+                    "Cada trozo forma de inmediato un nuevo imán con su polo Norte y Sur.",
+                    "Se transforma en un conductor eléctrico."
+                ],
+                correcta: 2,
+                explicacion: "¡Excelente! Existe inseparabilidad de los polos magnéticos (no existen monopolos aislados)."
+            },
+            {
+                pregunta: "¿Qué magnitud mide la diferencia de potencial que impulsa a las cargas a moverse en un circuito?",
+                opciones: ["Corriente eléctrica", "Tensión o Voltaje", "Campo magnético", "Carga eléctrica"],
+                correcta: 1,
+                explicacion: "¡Correcto! La tensión o voltaje (V) es la fuerza o diferencia de potencial que impulsa las cargas."
+            }
+        ];
+
+        let indiceActual = 0;
+        let puntos = 0;
+        let respondido = false;
+
+        function cargarPregunta() {
+            respondido = false;
+            const q = preguntas[indiceActual];
+            
+            document.getElementById('progress-text').innerText = `Pregunta ${indiceActual + 1} de ${preguntas.length}`;
+            document.getElementById('question').innerText = q.pregunta;
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('btn-next').style.display = 'none';
+
+            const containerOpciones = document.getElementById('options');
+            containerOpciones.innerHTML = '';
+
+            q.opciones.forEach((opcion, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'btn-option';
+                btn.innerText = opcion;
+                btn.onclick = () => seleccionarRespuesta(index);
+                containerOpciones.appendChild(btn);
+            });
+        }
+
+        function seleccionarRespuesta(indexSeleccionado) {
+            if (respondido) return;
+            respondido = true;
+
+            const q = preguntas[indiceActual];
+            const botones = document.querySelectorAll('.btn-option');
+            const feedback = document.getElementById('feedback');
+
+            botones.forEach(btn => btn.disabled = true);
+
+            if (indexSeleccionado === q.correcta) {
+                botones[indexSeleccionado].classList.add('correct');
+                feedback.innerText = q.explicacion;
+                feedback.classList.add('show', 'correct-fb');
+                puntos += 20;
+                document.getElementById('score-text').innerText = `Puntos: ${puntos}`;
+            } else {
+                botones[indexSeleccionado].classList.add('incorrect');
+                botones[q.correcta].classList.add('correct');
+                feedback.innerText = `Incorrecto. ${q.explicacion}`;
+                feedback.classList.add('show', 'incorrect-fb');
+            }
+
+            document.getElementById('btn-next').style.display = 'block';
+        }
+
+        function siguientePregunta() {
+            indiceActual++;
+            if (indiceActual < preguntas.length) {
+                cargarPregunta();
+            } else {
+                mostrarResultados();
+            }
+        }
+
+        function mostrarResultados() {
+            document.getElementById('quiz-screen').style.display = 'none';
+            const screenResults = document.getElementById('results-screen');
+            screenResults.style.display = 'block';
+
+            document.getElementById('final-score').innerText = `Puntaje final: ${puntos} / 100 pts`;
+            
+            const mensaje = document.getElementById('final-message');
+            if (puntos === 100) {
+                mensaje.innerText = "¡Excelente trabajo! Dominas perfectamente los conceptos de Energía, Electricidad y Magnetismo.";
+            } else if (puntos >= 60) {
+                mensaje.innerText = "¡Buen trabajo! Tienes una buena comprensión de los temas.";
+            } else {
+                mensaje.innerText = "Te sugerimos repasar nuevamente la Unidad 1 e intentarlo de nuevo.";
+            }
+        }
+
+        function reiniciarJuego() {
+            indiceActual = 0;
+            puntos = 0;
+            document.getElementById('score-text').innerText = `Puntos: ${puntos}`;
+            document.getElementById('quiz-screen').style.display = 'block';
+            document.getElementById('results-screen').style.display = 'none';
+            cargarPregunta();
+        }
+    </script>
+</body>
+</html>

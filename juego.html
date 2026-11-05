@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Desafío Interactivo - Unidad 1</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f4f8;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .quiz-container {
+            background-color: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            max-width: 650px;
+            width: 100%;
+            padding: 25px;
+        }
+
+        .quiz-header {
+            text-align: center;
+            border-bottom: 2px solid #e0e0e0;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .quiz-header h1 {
+            color: #1a365d;
+            margin: 0 0 10px 0;
+            font-size: 24px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .question-text {
+            font-size: 18px;
+            color: #2d3748;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .btn-option {
+            background-color: #edf2f7;
+            border: 2px solid #cbd5e0;
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 16px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #2d3748;
+        }
+
+        .btn-option:hover:not([disabled]) {
+            background-color: #e2e8f0;
+            border-color: #a0aec0;
+        }
+
+        .btn-option.correct {
+            background-color: #c6f6d5;
+            border-color: #38a169;
+            color: #22543d;
+            font-weight: bold;
+        }
+
+        .btn-option.incorrect {
+            background-color: #fed7d7;
+            border-color: #e53e3e;
+            color: #742a2a;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+            font-size: 15px;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct-fb {
+            background-color: #e6fffa;
+            color: #234e52;
+            border-left: 4px solid #319795;
+        }
+
+        .feedback.incorrect-fb {
+            background-color: #fff5f5;
+            color: #742a2a;
+            border-left: 4px solid #e53e3e;
+        }
+
+        .btn-next {
+            margin-top: 20px;
+            width: 100%;
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .btn-next:hover {
+            background-color: #2b6cb0;
+        }
+
+        .results {
+            text-align: center;
+            display: none;
+        }
+
+        .results h2 {
+            color: #2b6cb0;
+        }
+
+        .btn-restart {
+            background-color: #38a169;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        .btn-restart:hover {
+            background-color: #2f855a;
+        }
+
+        .nav-back {
+            display: block;
+            margin-top: 20px;
+            text-align: center;
+            color: #3182ce;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="quiz-container">
+    <div class="quiz-header">
+        <h1>⚡ Desafío de Física: Unidad 1</h1>
+        <div class="stats">
+            <span id="progress-text">Pregunta 1 de 5</span>
+            <span id="score-text">Puntos: 0</span>
+        </div>
+    </div>
+
+    <div id="quiz-screen">
+        <div class="question-text" id="question">Cargando pregunta...</div>
+        <div class="options-grid" id="options"></div>
+        <div class="feedback" id="feedback"></div>
+        <button class="btn-next" id="btn-next" onclick="siguientePregunta()">Siguiente Pregunta</button>
+    </div>
+
+    <div class="results" id="results-screen">
+        <h2>🎉 ¡Desafío Completado!</h2>
+        <p id="final-score" style="font-size: 20px; font-weight: bold;"></p>
+        <p id="final-message"></p>
+        <button class="btn-restart" onclick="reiniciarJuego()">Volver a Jugar</button>
+    </div>
+
+    <a href="index.html" class="nav-back">← Volver a la Unidad 1</a>
+</div>
+
+<script>
+    const preguntas = [
+        {
+            pregunta: "¿En qué unidad se mide la Energía según el Sistema Internacional?",
+            opciones: ["Amperios (A)", "Joules (J)", "Volts (V)", "Coulombs (C)"],
+            correcta: 1,
+            explicacion: "¡Correcto! La energía se mide en Joules (J)."
+        },
+        {
+            pregunta: "¿Qué sucede cuando acercas dos polos magnéticos del mismo signo (ej. Norte - Norte)?",
+            opciones: ["Se atraen", "Se repelen", "Se anulan y desaparecen", "Se convierten en cargas eléctricas"],
+            correcta: 1,
+            explicacion: "¡Muy bien! Polos del mismo signo se repelen, según la ley fundamental del magnetismo."
+        },
+        {
+            pregunta: "¿Qué rama de la electricidad estudia las cargas en movimiento?",
+            opciones: ["Electrostática", "Electrodinámica", "Termodinámica", "Magnetostática"],
+            correcta: 1,
+            explicacion: "¡Correcto! La Electrodinámica estudia las cargas eléctricas en movimiento (corriente)."
+        },
+        {
+            pregunta: "Si un imán de barra se corta por la mitad, ¿qué sucede?",
+            opciones: [
+                "Se obtiene un polo Norte aislado y un polo Sur aislado.",
+                "Pierde todo su magnetismo.",
+                "Cada trozo forma de inmediato un nuevo imán con su polo Norte y Sur.",
+                "Se transforma en un conductor eléctrico."
+            ],
+            correcta: 2,
+            explicacion: "¡Excelente! Existe inseparabilidad de los polos magnéticos (no existen monopolos aislados)."
+        },
+        {
+            pregunta: "¿Qué magnitud mide la diferencia de potencial que impulsa a las cargas a moverse en un circuito?",
+            opciones: ["Corriente eléctrica", "Tensión o Voltaje", "Campo magnético", "Carga eléctrica"],
+            correcta: 1,
+            explicacion: "¡Correcto! La tensión o voltaje (V) es la fuerza o diferencia de potencial que impulsa las cargas."
+        }
+    ];
+
+    let indiceActual = 0;
+    let puntos = 0;
+    let respondido = false;
+
+    function cargarPregunta() {
+        respondido = false;
+        const q = preguntas[indiceActual];
+        
+        document.getElementById('progress-text').innerText = `Pregunta ${indiceActual + 1} de ${preguntas.length}`;
+        document.getElementById('question').innerText = q.pregunta;
+        document.getElementById('feedback').className = 'feedback';
+        document.getElementById('btn-next').style.display = 'none';
+
+        const containerOpciones = document.getElementById('options');
+        containerOpciones.innerHTML = '';
+
+        q.opciones.forEach((opcion, index) => {
+            const btn = document.createElement('button');
+            btn.className = 'btn-option';
+            btn.innerText = opcion;
+            btn.onclick = () => seleccionarRespuesta(index);
+            containerOpciones.appendChild(btn);
+        });
+    }
+
+    function seleccionarRespuesta(indexSeleccionado) {
+        if (respondido) return;
+        respondido = true;
+
+        const q = preguntas[indiceActual];
+        const botones = document.querySelectorAll('.btn-option');
+        const feedback = document.getElementById('feedback');
+
+        botones.forEach(btn => btn.disabled = true);
+
+        if (indexSeleccionado === q.correcta) {
+            botones[indexSeleccionado].classList.add('correct');
+            feedback.innerText = q.explicacion;
+            feedback.classList.add('show', 'correct-fb');
+            puntos += 20; // 20 puntos por pregunta (Total 100)
+            document.getElementById('score-text').innerText = `Puntos: ${puntos}`;
+        } else {
+            botones[indexSeleccionado].classList.add('incorrect');
+            botones[q.correcta].classList.add('correct');
+            feedback.innerText = `Incorrecto. ${q.explicacion}`;
+            feedback.classList.add('show', 'incorrect-fb');
+        }
+
+        document.getElementById('btn-next').style.display = 'block';
+    }
+
+    function siguientePregunta() {
+        indiceActual++;
+        if (indiceActual < preguntas.length) {
+            cargarPregunta();
+        } else {
+            mostrarResultados();
+        }
+    }
+
+    function mostrarResultados() {
+        document.getElementById('quiz-screen').style.display = 'none';
+        const screenResults = document.getElementById('results-screen');
+        screenResults.style.display = 'block';
+
+        document.getElementById('final-score').innerText = `Puntaje final: ${puntos} / 100 pts`;
+        
+        const mensaje = document.getElementById('final-message');
+        if (puntos === 100) {
+            mensaje.innerText = "¡Excelente trabajo! Dominas perfectamente los conceptos de Energía, Electricidad y Magnetismo.";
+        } else if (puntos >= 60) {
+            mensaje.innerText = "¡Buen trabajo! Tienes una buena comprensión de los temas, aunque puedes repasar algunos detalles.";
+        } else {
+            mensaje.innerText = "Te sugerimos repasar nuevamente la Unidad 1 e intentarlo de nuevo.";
+        }
+    }
+
+    function reiniciarJuego() {
+        indiceActual = 0;
+        puntos = 0;
+        document.getElementById('score-text').innerText = `Puntos: ${puntos}`;
+        document.getElementById('quiz-screen').style.display = 'block';
+        document.getElementById('results-screen').style.display = 'none';
+        cargarPregunta();
+    }
+
+    // Iniciar el juego al cargar la página
+    cargarPregunta();
+</script>
+
+</body>
+</html>
